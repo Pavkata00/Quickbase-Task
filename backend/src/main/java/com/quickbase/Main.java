@@ -34,30 +34,40 @@ public class Main {
         // Getting the data and printing the first query result:
         List<EntityData> allData = dbm.getAllData();
 
-        System.out.println("Printing the result taken from the DB: ");
+        System.out.println("------------------------------------------");
+        System.out.println("Printing the result taken from the local DB: ");
         for (EntityData allDatum : allData) {
             System.out.printf("%s - %d%n",allDatum.getName(), allDatum.getPopulation());
         }
+
+
+
 
 
         //HashMap used for best performance for final result
         HashMap<String, Integer> finalResult = new HashMap<>();
 
         //Adding first the whole data from local DB because in case  of duplicate country, we will use the
-        //information from it as requested.
+        //information from it as requested:
 
         for (EntityData allDatum : allData) {
             finalResult.put(allDatum.getName(),allDatum.getPopulation());
         }
 
+
         ConcreteStatService concreteStatService = new ConcreteStatService();
 
+        //Using the given method to retrieve the API data and iterate through it
         for (Pair<String, Integer> data : concreteStatService.GetCountryPopulations()) {
+
+            //if the country is already added we are skipping because the Local DB data has priority
             if (!finalResult.containsKey(data.getKey())) {
                 finalResult.put(data.getKey(), data.getValue());
             }
+
         }
 
+        System.out.println("------------------------------------------");
         System.out.println("Final result after consuming the API and local DB information:");
 
         for (Map.Entry<String, Integer> stringIntegerEntry : finalResult.entrySet()) {

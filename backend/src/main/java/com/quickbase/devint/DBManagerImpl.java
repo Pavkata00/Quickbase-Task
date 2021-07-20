@@ -46,6 +46,7 @@ public class DBManagerImpl implements DBManager {
 
         Statement statement = connection.createStatement();
 
+        //executing the query with my SQL code.
         ResultSet resultSet = statement.executeQuery(sql);
 
         List<EntityData> entities = new ArrayList<>();
